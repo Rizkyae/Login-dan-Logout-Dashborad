@@ -1,0 +1,411 @@
+/* =========================================================
+   ADMIN PANEL — "NEURAL GRID" THEME
+   Dark tech / glassmorphism / floating interactive elements
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-void:        #05070d;
+  --bg-void-2:      #080b16;
+
+  --surface:        rgba(255, 255, 255, 0.045);
+  --surface-hover:  rgba(255, 255, 255, 0.07);
+  --surface-border: rgba(255, 255, 255, 0.09);
+
+  --text-primary:   #eef1f8;
+  --text-muted:     #8892a8;
+  --text-faint:     #545d72;
+
+  --accent-cyan:    #22d3ee;
+  --accent-violet:  #8b5cf6;
+  --accent-mint:    #34e3a1;
+  --accent-danger:  #fb7185;
+
+  --grad-primary: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-violet) 100%);
+  --grad-danger:  linear-gradient(135deg, #fb7185 0%, #f43f5e 100%);
+
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  --shadow-float: 0 8px 30px rgba(0, 0, 0, 0.45);
+  --shadow-glow-cyan: 0 0 0 1px rgba(34, 211, 238, 0.25), 0 10px 40px -8px rgba(34, 211, 238, 0.55);
+
+  color-scheme: dark;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-void);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .brand {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+}
+
+::selection {
+  background: rgba(139, 92, 246, 0.35);
+}
+
+/* =========================================================
+   AMBIENT BACKGROUND — animated mesh glow + circuit grid
+   ========================================================= */
+
+.scene {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 20%, rgba(34, 211, 238, 0.16), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 85% 80%, rgba(139, 92, 246, 0.18), transparent 60%),
+    var(--bg-void);
+}
+
+.scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, black 20%, transparent 75%);
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+  animation: drift 22s ease-in-out infinite;
+  pointer-events: none;
+}
+.orb-a { width: 380px; height: 380px; top: -80px; left: -100px; background: var(--accent-cyan); }
+.orb-b { width: 420px; height: 420px; bottom: -140px; right: -120px; background: var(--accent-violet); animation-delay: -9s; }
+
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(30px, -25px) scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb, .btn-primary, .btn-logout, .fab-ring { animation: none !important; }
+}
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+.login-container {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 408px;
+  padding: 42px 36px 36px;
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  box-shadow: var(--shadow-float);
+  position: relative;
+}
+
+/* thin gradient seam along the top edge of the card */
+.login-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 14%; right: 14%;
+  height: 1px;
+  background: var(--grad-primary);
+  opacity: 0.8;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.admin-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(160deg, rgba(34,211,238,0.16), rgba(139,92,246,0.16));
+  border: 1px solid var(--surface-border);
+  box-shadow: 0 0 0 1px rgba(34,211,238,0.08), 0 12px 26px -10px rgba(34,211,238,0.4);
+  animation: hover-float 4.5s ease-in-out infinite;
+}
+
+.admin-icon svg { width: 28px; height: 28px; }
+
+@keyframes hover-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.login-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 6px;
+}
+
+.login-header p {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ERROR */
+.alert-error {
+  background: rgba(251, 113, 133, 0.1);
+  color: #fda4af;
+  border: 1px solid rgba(251, 113, 133, 0.25);
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  margin-bottom: 20px;
+}
+
+/* FORM */
+.form-group { margin-bottom: 18px; }
+
+.form-group label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 13px 15px;
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--surface-border);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.form-group input::placeholder { color: var(--text-faint); }
+
+.form-group input:focus {
+  background: rgba(255, 255, 255, 0.055);
+  border-color: rgba(34, 211, 238, 0.55);
+  box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.12);
+}
+
+/* PASSWORD */
+.password-wrapper { position: relative; }
+.password-wrapper input { padding-right: 48px; }
+
+.toggle-password {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.toggle-password:hover { background: var(--surface-hover); color: var(--text-primary); }
+.toggle-password svg { width: 19px; height: 19px; }
+
+/* =========================================================
+   FLOATING BUTTONS
+   ========================================================= */
+
+.btn-primary {
+  width: 100%;
+  margin-top: 6px;
+  padding: 14px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #05070d;
+  background: var(--grad-primary);
+  background-size: 160% 160%;
+  cursor: pointer;
+  box-shadow: var(--shadow-glow-cyan);
+  transform: translateY(0);
+  transition: transform 0.25s cubic-bezier(.2,.8,.2,1), box-shadow 0.25s ease, background-position 0.4s ease;
+  animation: pulse-glow 3.6s ease-in-out infinite;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  background-position: 100% 0%;
+  box-shadow: 0 0 0 1px rgba(34,211,238,0.4), 0 18px 40px -10px rgba(139,92,246,0.65);
+}
+
+.btn-primary:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: var(--shadow-glow-cyan); }
+  50%      { box-shadow: 0 0 0 1px rgba(139,92,246,0.3), 0 14px 36px -8px rgba(139,92,246,0.6); }
+}
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+.dashboard-container {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 32px;
+  background: rgba(8, 11, 22, 0.7);
+  border-bottom: 1px solid var(--surface-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.brand .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent-mint);
+  box-shadow: 0 0 10px 2px rgba(52, 227, 161, 0.7);
+}
+
+.btn-logout {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(251, 113, 133, 0.1);
+  color: #fda4af;
+  border: 1px solid rgba(251, 113, 133, 0.3);
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 600;
+  transition: transform 0.2s cubic-bezier(.2,.8,.2,1), background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-logout:hover {
+  transform: translateY(-2px);
+  background: rgba(251, 113, 133, 0.18);
+  box-shadow: 0 10px 24px -8px rgba(251, 113, 133, 0.55);
+}
+
+.dashboard-content {
+  max-width: 980px;
+  margin: 56px auto;
+  padding: 0 24px;
+}
+
+.dashboard-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  padding: 38px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-float);
+}
+
+.dashboard-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: var(--grad-primary);
+  opacity: 0.7;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 12.5px;
+  color: var(--accent-cyan);
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.dashboard-card h1 {
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+.dashboard-card p {
+  color: var(--text-muted);
+  line-height: 1.7;
+  font-size: 14.5px;
+}
+
+.info-row {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--surface-border);
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.info-row strong {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .login-card { padding: 30px 24px; }
+  .navbar { padding: 14px 18px; }
+  .dashboard-card { padding: 26px; }
+}
