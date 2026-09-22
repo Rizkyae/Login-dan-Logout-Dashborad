@@ -1,7 +1,7 @@
 # Login-dan-Logout-Dashborad
 M Miftahul Rizky Amirullah ( I43251006 ) golongan  B
 
-Login Information
+Login Information |
 Email : admin@gmail.com
 Password : admin123
 
